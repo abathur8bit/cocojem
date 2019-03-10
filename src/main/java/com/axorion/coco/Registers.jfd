@@ -1,0 +1,148 @@
+JFDML JFormDesigner: "5.2.5.1.342" Java: "1.8.0_152-release" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JDialog", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			name: "this"
+			"title": "Registers"
+			"name": "Registers"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class javax.swing.BoxLayout ) {
+				"axis": 1
+			} ) {
+				name: "registersPanel"
+				"border": new javax.swing.border.EmptyBorder( 10, 10, 10, 10 )
+				"minimumSize": new java.awt.Dimension( 250, 350 )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) {
+					"columns": 2
+					"rows": 0
+				} ) {
+					name: "panel1"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label1"
+						"text": "A"
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "label2"
+						"text": "00"
+					} )
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) ) {
+					name: "panel2"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label3"
+						"text": "B"
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "label4"
+						"text": "00"
+					} )
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) ) {
+					name: "panel3"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label5"
+						"text": "X"
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "textField1"
+						"text": "0000"
+					} )
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) ) {
+					name: "panel4"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label7"
+						"text": "Y"
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "label8"
+						"text": "0000"
+					} )
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) ) {
+					name: "panel5"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label9"
+						"text": "U"
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "label10"
+						"text": "0000"
+					} )
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) ) {
+					name: "panel6"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label11"
+						"text": "S"
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "label12"
+						"text": "0000"
+					} )
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) ) {
+					name: "panel7"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label13"
+						"text": "PC"
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "label14"
+						"text": "0000"
+					} )
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) ) {
+					name: "panel8"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label15"
+						"text": "V"
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "label16"
+						"text": "0000"
+					} )
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) ) {
+					name: "panel9"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label17"
+						"text": "E"
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "label18"
+						"text": "00"
+					} )
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) ) {
+					name: "panel10"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label19"
+						"text": "F"
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "label20"
+						"text": "00"
+					} )
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) ) {
+					name: "panel11"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label21"
+						"text": "CC"
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "label22"
+						"text": "00 ="
+					} )
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 400, 300 )
+		} )
+	}
+}

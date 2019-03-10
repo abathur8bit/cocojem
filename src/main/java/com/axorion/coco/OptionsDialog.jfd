@@ -1,0 +1,217 @@
+JFDML JFormDesigner: "5.2.5.1.342" Java: "1.8.0_152-release" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JDialog", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			name: "this"
+			"resizable": false
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+				name: "dialogPane"
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+					name: "contentPanel"
+					add( new FormContainer( "javax.swing.JTabbedPane", new FormLayoutManager( class javax.swing.JTabbedPane ) ) {
+						name: "tabbedPane1"
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) ) {
+							name: "machinePanel"
+							add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) ) {
+								name: "panel3"
+								add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class javax.swing.BoxLayout ) {
+									"axis": 1
+								} ) {
+									name: "machineTypePanel"
+									"border": new javax.swing.border.TitledBorder( "Type" )
+									add( new FormComponent( "javax.swing.JRadioButton" ) {
+										name: "radioButton8"
+										"text": "Color Computer 1"
+										"$buttonGroup": new FormReference( "buttonGroup1" )
+									} )
+									add( new FormComponent( "javax.swing.JRadioButton" ) {
+										name: "radioButton9"
+										"text": "Color Computer 2"
+										"$buttonGroup": new FormReference( "buttonGroup1" )
+									} )
+									add( new FormComponent( "javax.swing.JRadioButton" ) {
+										name: "radioButton10"
+										"text": "Color Computer 3"
+										"$buttonGroup": new FormReference( "buttonGroup1" )
+										"selected": true
+									} )
+								} )
+								add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) {
+									"columns": 1
+									"rows": 0
+								} ) {
+									name: "specsPanel"
+									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class javax.swing.BoxLayout ) {
+										"axis": 1
+									} ) {
+										name: "cpuPanel"
+										"border": new javax.swing.border.TitledBorder( "CPU" )
+										add( new FormComponent( "javax.swing.JRadioButton" ) {
+											name: "radioButton6"
+											"text": "Motorola MC6809"
+											"$buttonGroup": new FormReference( "buttonGroup3" )
+										} )
+										add( new FormComponent( "javax.swing.JRadioButton" ) {
+											name: "radioButton7"
+											"text": "Hitachi HD6309"
+											"$buttonGroup": new FormReference( "buttonGroup3" )
+											"selected": true
+										} )
+									} )
+									add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class javax.swing.BoxLayout ) {
+										"axis": 1
+									} ) {
+										name: "monitorTypePanel"
+										"border": &TitledBorder0 new javax.swing.border.TitledBorder( "Monitor Type" )
+										add( new FormComponent( "javax.swing.JRadioButton" ) {
+											name: "radioButton11"
+											"text": "RGB"
+											"selected": true
+											"$buttonGroup": new FormReference( "buttonGroup5" )
+										} )
+										add( new FormComponent( "javax.swing.JRadioButton" ) {
+											name: "radioButton12"
+											"text": "Composite"
+											"$buttonGroup": new FormReference( "buttonGroup5" )
+										} )
+									} )
+								} )
+								add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class javax.swing.BoxLayout ) {
+									"axis": 1
+								} ) {
+									name: "memoryPanel"
+									"border": new javax.swing.border.TitledBorder( "Memory" )
+									add( new FormComponent( "javax.swing.JRadioButton" ) {
+										name: "radioButton1"
+										"text": "16 K"
+										"$buttonGroup": new FormReference( "buttonGroup2" )
+									} )
+									add( new FormComponent( "javax.swing.JRadioButton" ) {
+										name: "radioButton2"
+										"text": "32 K"
+										"$buttonGroup": new FormReference( "buttonGroup2" )
+									} )
+									add( new FormComponent( "javax.swing.JRadioButton" ) {
+										name: "radioButton3"
+										"text": "64 K"
+										"$buttonGroup": new FormReference( "buttonGroup2" )
+									} )
+									add( new FormComponent( "javax.swing.JRadioButton" ) {
+										name: "radioButton4"
+										"text": "128 K"
+										"$buttonGroup": new FormReference( "buttonGroup2" )
+									} )
+									add( new FormComponent( "javax.swing.JRadioButton" ) {
+										name: "radioButton5"
+										"text": "512 K"
+										"$buttonGroup": new FormReference( "buttonGroup2" )
+										"selected": true
+									} )
+								} )
+							} )
+						}, new FormLayoutConstraints( null ) {
+							"title": "Machine"
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jformdesigner.runtime.NullLayout ) ) {
+							name: "displayPanel"
+							add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class javax.swing.BoxLayout ) {
+								"axis": 1
+							} ) {
+								name: "monitorTypePanel2"
+								"border": #TitledBorder0
+								add( new FormComponent( "javax.swing.JRadioButton" ) {
+									name: "radioButton13"
+									"text": "RGB"
+									"selected": true
+									"$buttonGroup": new FormReference( "buttonGroup4" )
+								} )
+								add( new FormComponent( "javax.swing.JRadioButton" ) {
+									name: "radioButton14"
+									"text": "Composite"
+									"$buttonGroup": new FormReference( "buttonGroup4" )
+								} )
+								add( new FormComponent( "javax.swing.JCheckBox" ) {
+									name: "checkBox1"
+									"text": "Lock at 60Hz"
+								} )
+							}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+								"width": 166
+								"height": 148
+								"x": 0
+								"y": 0
+							} )
+						}, new FormLayoutConstraints( null ) {
+							"title": "Display"
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+							name: "inputPanel"
+						}, new FormLayoutConstraints( null ) {
+							"title": "Input"
+						} )
+					}, new FormLayoutConstraints( class java.lang.String ) {
+						"value": "Center"
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "Center"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+					"$columnSpecs": "0:1.0, 80, 80"
+					"$rowSpecs": "0"
+					"$hGap": 5
+					"$vGap": 5
+				} ) {
+					name: "buttonBar"
+					"border": new javax.swing.border.EmptyBorder( 12, 0, 0, 0 )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "cancelButton"
+						"text": "Cancel"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "cancelButtonActionPerformed", true ) )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridx": 1
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "okButton"
+						"text": "OK"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "okButtonActionPerformed", true ) )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridx": 2
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "South"
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 500, 395 )
+		} )
+		add( new FormNonVisual( "javax.swing.ButtonGroup" ) {
+			name: "buttonGroup1"
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 411 )
+		} )
+		add( new FormNonVisual( "javax.swing.ButtonGroup" ) {
+			name: "buttonGroup2"
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 471 )
+		} )
+		add( new FormNonVisual( "javax.swing.ButtonGroup" ) {
+			name: "buttonGroup3"
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 531 )
+		} )
+		add( new FormNonVisual( "javax.swing.ButtonGroup" ) {
+			name: "buttonGroup4"
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 591 )
+		} )
+		add( new FormNonVisual( "javax.swing.ButtonGroup" ) {
+			name: "buttonGroup5"
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 651 )
+		} )
+	}
+}
