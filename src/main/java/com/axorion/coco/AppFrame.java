@@ -18,10 +18,12 @@
 
 package com.axorion.coco;
 
-import com.antws.tools.RandomTool;
-
+import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.filechooser.FileFilter;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.CropImageFilter;
 import java.awt.image.FilteredImageSource;
@@ -31,9 +33,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.URL;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.filechooser.FileFilter;
 
 /**
  * @author Lee Patterson
