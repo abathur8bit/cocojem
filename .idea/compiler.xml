@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="8BitCoco" />
+        <module name="CocoJEM" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="8BitCoco" target="1.5" />
+      <module name="CocoJEM" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
