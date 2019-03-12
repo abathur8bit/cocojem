@@ -5,7 +5,7 @@
 
 mvn package
 
-cp -v target/8BitCoco-1.0-SNAPSHOT.jar ~/Public/CocoJEM.jar
+cp -v target/CocoJEM-1.0-SNAPSHOT.jar ~/Public/CocoJEM.jar
 
 javapackager -deploy \
     -title "CocoJEM" \
@@ -15,13 +15,4 @@ javapackager -deploy \
     -Bicon=CocoJEM.icns \
     -outdir dist \
     -outfile CocoJEM.app \
-    -srcfiles target/8BitCoco-1.0-SNAPSHOT.jar
-
-#javapackager -deploy \
-#    -title "CocoJEM" \
-#    -name "CocoJEM" \
-#    -appclass com.axorion.coco.CocoJEM \
-#    -native image \
-#    -outdir dist \
-#    -outfile CocoJEM.app \
-#    -srcfiles target/8BitCoco-1.0-SNAPSHOT.jar
+    -srcfiles target/CocoJEM-1.0-SNAPSHOT.jar
