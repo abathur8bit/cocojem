@@ -38,7 +38,8 @@ public class AppTest
 
     public void testChar() {
         int n=65;
-        System.out.format("%c",n);
+        String formatted = String.format("%c",n);
+        assertEquals("A",formatted);
     }
 
     public void testHex() {

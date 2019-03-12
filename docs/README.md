@@ -110,3 +110,10 @@ Installing jar locally.
         -DartifactId=antws -Dversion=1.0 -Dpackaging=jar
 
 https://maven.apache.org/plugins/maven-install-plugin/usage.html
+
+
+# JUnit
+https://junit.org/junit5/ | https://junit.org/junit5/docs/current/user-guide/
+
+# Pros Cons
+con: No unsigned type. Use Integer unsigned operations.

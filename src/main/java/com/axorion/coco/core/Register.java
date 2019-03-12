@@ -16,9 +16,43 @@
  * limitations under the License.
  * ******************************************************************************/
 
-package com.axorion.coco;
+package com.axorion.coco.core;
 
-public interface Tickable {
-    void tick(long now);
-    int getFps();
+public class Register {
+    public static final int mask = 0xFFFF;
+    protected int reg;
+    public Register(int value) {
+        this.reg = value;
+    }
+    public void setReg(int value) {
+        reg = value&mask;
+    }
+    public int getLSB() {
+        return reg & 0x00FF;
+    }
+    public int getMSB() {
+        return reg & 0xFF00;
+    }
+    public int getReg() {
+        return reg;
+    }
+    public int inc() {
+        reg = (reg+1)&mask;
+        return reg;
+    }
+    public int dec() {
+        reg = (reg-1)&mask;
+        return reg;
+    }
+    public int bit(int b) {
+        int n = 1<<b;
+        if((reg&n) == n)
+            return 1;
+        return 0;
+    }
+    public int setBit(int b) {
+        int n = 1<<b;
+        reg = (reg | n) & mask;
+        return reg;
+    }
 }

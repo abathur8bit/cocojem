@@ -16,34 +16,46 @@
  * limitations under the License.
  * ******************************************************************************/
 
-package com.axorion.coco;
+package com.axorion.coco.core;
 
-import javax.swing.filechooser.FileFilter;
-import java.io.File;
+public class EmulatorDevice {
+    protected String name;
+    protected String description;
+    protected String type;
+    public int BYTE_MASK = 0xFF;
+    public int WORD_MASK = 0xFFFF;
 
-public class OpenFileFilter extends FileFilter {
-
-    String description = "";
-    String fileExt = "";
-
-    public OpenFileFilter(String extension) {
-        fileExt = extension;
+    public EmulatorDevice(String name,String type) {
+        this(name,name,type);
     }
 
-    public OpenFileFilter(String extension, String typeDescription) {
-        fileExt = extension;
-        this.description = typeDescription;
+    public EmulatorDevice(String name,String description,String type) {
+        this.name = name;
+        this.description = description;
+        this.type = type;
     }
 
-    @Override
-    public boolean accept(File f) {
-        if (f.isDirectory())
-            return true;
-        return (f.getName().toLowerCase().endsWith(fileExt));
+    public String getName() {
+        return name;
     }
 
-    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -16,9 +16,11 @@
  * limitations under the License.
  * ******************************************************************************/
 
-package com.axorion.coco;
+package com.axorion.coco.core;
 
-public interface Tickable {
-    void tick(long now);
-    int getFps();
+public class Machine extends EmulatorDevice {
+    Cpu cpu;
+    public Machine(String name) {
+        super(name,"machine");
+    }
 }
