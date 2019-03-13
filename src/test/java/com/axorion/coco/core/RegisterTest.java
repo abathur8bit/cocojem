@@ -29,11 +29,11 @@ class RegisterTest {
     }
     @Test public void testLsb() {
         Register target = new Register(0xABCD);
-        assertEquals(0x00CD,target.getLSB());
+        assertEquals(0xCD,target.getLSB());
     }
     @Test public void testMsb() {
         Register target = new Register(0xABCD);
-        assertEquals(0xAB00,target.getMSB());
+        assertEquals(0xAB,target.getMSB());
     }
     @Test public void testDec() {
         Register target = new Register(1);
@@ -47,7 +47,7 @@ class RegisterTest {
         target.inc();
         assertEquals(0xFFFF,target.getReg());
         assertEquals(0xFF,target.getLSB());
-        assertEquals(0xFF00,target.getMSB());
+        assertEquals(0xFF,target.getMSB());
         target.inc();
         assertEquals(0,target.getReg());
         assertEquals(0,target.getLSB());
@@ -75,5 +75,12 @@ class RegisterTest {
         assertEquals(3,target.getReg());
         target.setBit(2);
         assertEquals(7,target.getReg());
+    }
+    @Test public void testSetRegMsbLsb() {
+        Register target = new Register(0);
+        target.setReg(0xAC,0xDC);
+        assertEquals(0xAC,target.getMSB());
+        assertEquals(0xDC,target.getLSB());
+        assertEquals(0xACDC,target.getReg());
     }
 }

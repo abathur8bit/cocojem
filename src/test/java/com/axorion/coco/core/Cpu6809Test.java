@@ -18,6 +18,7 @@
 
 package com.axorion.coco.core;
 
+import com.axorion.coco.core.mc6809.MnemonicEnum6809;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,12 +27,36 @@ class Cpu6809Test {
     //(D) Direct (I) Inherent (R) Relative (M) Immediate (X) Indexed (E) extened
     //pc x y u s dp d cc
     @Test public void abx_m() {
-        int[] mem = {Cpu6809.ABX_M};
-        int[] regs = {0,1,0,0,0,0,0x1001,0};
+        int[] mem = {MnemonicEnum6809.ABX_M.getOpcode()};
+        int[] regs = {0,1,0,0,0,0,0x1001,0xFF};
         Cpu6809 cpu = new Cpu6809(regs);
         cpu.setMemoryRange(0,mem);
         cpu.exec(System.nanoTime());
-        int[] regsResult = {1,2,0,0,0,0,0x1001,0x80};
+        int[] regsResult = {1,2,0,0,0,0,0x1001,0xFF};
+        verifyRegisters(cpu,regsResult);
+    }
+    @Test
+    public void clra() {
+        int[] mem = {MnemonicEnum6809.CLRA.getOpcode()};
+        //                                                       EFHINZVC
+        int[] regs = {0,0,0,0,0,0,0xAABB,      Integer.parseInt("11111011",2)};
+        Cpu6809 cpu = new Cpu6809(regs);
+        cpu.setMemoryRange(0,mem);
+        cpu.exec(System.nanoTime());
+        //                                                       EFHINZVC
+        int[] regsResult = {1,0,0,0,0,0,0x00BB,Integer.parseInt("11110100",2)};
+        verifyRegisters(cpu,regsResult);
+    }
+    @Test
+    public void clrb() {
+        int[] mem = {MnemonicEnum6809.CLRB.getOpcode()};
+        //                                                       EFHINZVC
+        int[] regs = {0,0,0,0,0,0,0xAABB,      Integer.parseInt("11111011",2)};
+        Cpu6809 cpu = new Cpu6809(regs);
+        cpu.setMemoryRange(0,mem);
+        cpu.exec(System.nanoTime());
+        //                                                       EFHINZVC
+        int[] regsResult = {1,0,0,0,0,0,0xAA00,Integer.parseInt("11110100",2)};
         verifyRegisters(cpu,regsResult);
     }
     @Test public void testMemory() {
@@ -85,6 +110,6 @@ class Cpu6809Test {
         assertEquals(regs[i++], cpu.getS() .getReg());
         assertEquals(regs[i++], cpu.getDp().getReg());
         assertEquals(regs[i++], cpu.getD() .getReg());
-        assertEquals(regs[i++], cpu.getCc().getReg());
+        assertEquals(regs[i++], cpu.getCc().getAll());
     }
 }

@@ -27,11 +27,14 @@ public class Register {
     public void setReg(int value) {
         reg = value&mask;
     }
+    public void setReg(int msb,int lsb) {
+        reg = (msb&0xFF)*0x100 + (lsb&0xFF);
+    }
     public int getLSB() {
         return reg & 0x00FF;
     }
     public int getMSB() {
-        return reg & 0xFF00;
+        return (reg & 0xFF00) / 0x100;
     }
     public int getReg() {
         return reg;

@@ -47,4 +47,11 @@ public class AppTest
         int n = Integer.parseInt(hex,16);
         assertTrue(n==0xc00);
     }
+
+    public void testBinary() {
+        assertTrue(Integer.parseInt("0101",2)==5);
+        assertTrue(Integer.parseInt("0001",2)==1);
+        assertTrue(Integer.parseInt("0111",2)==7);
+        assertTrue(Integer.parseInt("11111111",2)==0xFF);
+    }
 }

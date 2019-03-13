@@ -18,11 +18,11 @@
 
 package com.axorion.coco.core;
 
+import com.axorion.coco.core.mc6809.MnemonicEnum6809;
+
 public class Cpu6809 extends Cpu {
-    public static final int ABX_M = 0x3A;
-
     public static final String DEVICE_NAME = "MC6809";
-
+    protected MnemonicEnum6809 mnemonic;
     Register pc;
     Register x;
     Register y;
@@ -30,7 +30,7 @@ public class Cpu6809 extends Cpu {
     Register s;
     Register dp;
     Register d;
-    Register cc;
+    ConditionCodeRegister cc;
 
     public Cpu6809(int[] regs) {
         this(regs[0],regs[1],regs[2],regs[3],regs[4],regs[5],regs[6],regs[7]);
@@ -45,7 +45,7 @@ public class Cpu6809 extends Cpu {
         this.s = new Register(s);
         this.dp = new Register(dp);
         this.d = new Register(d);
-        this.cc = new Register(cc);
+        this.cc = new ConditionCodeRegister(cc);
     }
 
     public Cpu6809() {
@@ -53,18 +53,49 @@ public class Cpu6809 extends Cpu {
     }
 
     public void exec(long now) {
-        int instructon = memory[pc.getReg()];
-        switch(instructon) {
+        int opcode = memory[pc.getReg()];
+        if(opcode == 0x10 || opcode == 0x11) {
+            opcode = opcode*0x100+memory[pc.getReg()];
+        }
+        mnemonic = MnemonicEnum6809.lookupMnemonic(opcode);
+
+        switch(mnemonic) {
             case ABX_M: abx(); break;
+            case CLRA: clra(); break;
+            case CLRB: clrb(); break;
+
+            default: //todo lee throw exception as the instruction was not valid
+                break;
         }
-        if(pc.getReg() > 0) {
-            cc.setBit(7);
-        }
+
+//        if(pc.getReg() > 0) { //this seems to be the case when I'm running in edtasm, is this right?
+//            cc.setEntire(true);
+//        }
     }
 
     public void abx() {
-        cycleCounter += 3;
+        cycleCounter += mnemonic.getCycles();
         x.setReg((x.getReg()+d.getLSB()) & Register.mask);
+        pc.inc();
+    }
+
+    public void clra() {
+        cycleCounter += mnemonic.getCycles();
+        d.setReg(0,d.getLSB());
+        cc.setNegative(false);
+        cc.setZero(true);
+        cc.setOverflow(false);
+        cc.setCarry(false);
+        pc.inc();
+    }
+
+    public void clrb() {
+        cycleCounter += mnemonic.getCycles();
+        d.setReg(d.getMSB(),0);
+        cc.setNegative(false);
+        cc.setZero(true);
+        cc.setOverflow(false);
+        cc.setCarry(false);
         pc.inc();
     }
 
@@ -128,12 +159,12 @@ public class Cpu6809 extends Cpu {
         this.d = d;
     }
 
-    public Register getCc() {
+    public ConditionCodeRegister getCc() {
         return cc;
     }
 
-    public void setCc(Register cc) {
+    //Careful, you are setting a new cc register, not setting the value of the existing one.
+    public void setCc(ConditionCodeRegister cc) {
         this.cc = cc;
     }
-
 }
