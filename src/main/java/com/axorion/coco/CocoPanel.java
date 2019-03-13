@@ -25,6 +25,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.awt.image.VolatileImage;
 import java.util.HashMap;
 
 public class CocoPanel extends JPanel implements Tickable {
@@ -56,7 +57,28 @@ public class CocoPanel extends JPanel implements Tickable {
     Image[] strip;
     int stripIndex=0;
     Color nuclearGreen = new Color(0,255,0);
-    public int[] memory = new int[0x200];
+    public int[] memory = new int[512*1024];
+    BufferedImage doubleBuffer;
+    Graphics2D g2buff;
+
+    String[] keys = {
+            //inverted
+            "000","001","002","003","004","005","006","007","008","009","010","011","012","013","014","015","016","017","018","019","020","021","022","023","024","025","026","027","028","029","030","031",
+            //regular
+            " ","!","\"","#","$","%","&","'","(",")","*","+",",","-",".","/","0","1","2","3","4","5","6","7","8","9",":",";","<","=",">","?",
+            "@","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","[","\\","]","^","<",
+            //inverted/lower case
+            "@@","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","[[","\\\\","]","^^","<<",
+            //graphic blocks
+            "128","129","130","131","132","133","134","135","136","137","138","139","140","141","142","143",    //green
+            "144","145","146","147","148","149","150","151","152","153","154","155","156","157","158","159",    //red
+            "160","161","162","163","164","165","166","167","168","169","170","171","172","173","174","175",    //light blue
+            "176","177","178","179","180","181","182","183","184","185","186","187","188","189","190","191",    //grey
+            "192","193","194","195","196","197","198","199","200","201","202","203","204","205","206","207",    //white
+            "208","209","210","211","212","213","214","215","216","217","218","219","220","221","222","223",    //cyan
+            "224","225","226","227","228","229","230","231","232","233","234","235","236","237","238","239",    //dark blue
+            "240","241","242","243","244","245","246","247","248","249","250","251","252","253","254","255"     //orange
+    };
 
     public CocoPanel(AppFrame parent) {
         Img.thing();
@@ -69,149 +91,12 @@ public class CocoPanel extends JPanel implements Tickable {
         frames = 0;
         cursorTimer = timer+CURSOR_DELAY;
 
-//        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//        String []fontFamilies = ge.getAvailableFontFamilyNames();
-//
-//        for(String font : fontFamilies) {
-//            System.out.println("Font="+font);
-//        }
-
-        strip = parent.loadImageStrip("font32x16_grid32x48.png",32*7,32,48,0);
+        doubleBuffer = new BufferedImage(nuclear.getWidth(null),nuclear.getHeight(null),BufferedImage.TYPE_INT_RGB);
+        g2buff = doubleBuffer.createGraphics();
+        strip = parent.loadImageStrip("font32x16_grid32x48.png",32*8,32,48,0);
         stripIndex = 0;
-        String[] keys = {
-                " ","!","\"","#","$","%","&","'","(",")","*","+",",","-",".","/","0","1","2","3","4","5","6","7","8","9",":",";","<","=",">","?",
-                "@","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","[","\\","]","^","<",
-                "@@","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","[[","\\\\","]","^^","<<",
-                "128",
-                "129",
-                "130",
-                "131",
-                "132",
-                "133",
-                "134",
-                "135",
-                "136",
-                "137",
-                "138",
-                "139",
-                "140",
-                "141",
-                "142",
-                "143",
-                "144",
-                "145",
-                "146",
-                "147",
-                "148",
-                "149",
-                "150",
-                "151",
-                "152",
-                "153",
-                "154",
-                "155",
-                "156",
-                "157",
-                "158",
-                "159",
-                "160",
-                "161",
-                "162",
-                "163",
-                "164",
-                "165",
-                "166",
-                "167",
-                "168",
-                "169",
-                "170",
-                "171",
-                "172",
-                "173",
-                "174",
-                "175",
-                "176",
-                "177",
-                "178",
-                "179",
-                "180",
-                "181",
-                "182",
-                "183",
-                "184",
-                "185",
-                "186",
-                "187",
-                "188",
-                "189",
-                "190",
-                "191",
-                "192",
-                "193",
-                "194",
-                "195",
-                "196",
-                "197",
-                "198",
-                "199",
-                "200",
-                "201",
-                "202",
-                "203",
-                "204",
-                "205",
-                "206",
-                "207",
-                "208",
-                "209",
-                "210",
-                "211",
-                "212",
-                "213",
-                "214",
-                "215",
-                "216",
-                "217",
-                "218",
-                "219",
-                "220",
-                "221",
-                "222",
-                "223",
-                "224",
-                "225",
-                "226",
-                "227",
-                "228",
-                "229",
-                "230",
-                "231",
-                "232",
-                "233",
-                "234",
-                "235",
-                "236",
-                "237",
-                "238",
-                "239",
-                "240",
-                "241",
-                "242",
-                "243",
-                "244",
-                "245",
-                "246",
-                "247",
-                "248",
-                "249",
-                "250",
-                "251",
-                "252",
-                "253",
-                "254",
-                "255"
-        };
         cocoFont = new FontMap(parent,keys,strip);
+//        setSize(nuclear.getWidth(null)/2,nuclear.getHeight(null));
     }
 
     public void tick(long now) {
@@ -240,36 +125,17 @@ public class CocoPanel extends JPanel implements Tickable {
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
-//        if(nuclear != null && nuclear.getWidth(this) != -1) {
-//            Dimension size = calculateSize(nuclear);
-//            int x = 0;//parent.getWidth()/2 - nuclear.getWidth(this)/2;
-//            int y = 0;//parent.getHeight()/2 - nuclear.getHeight(this)/2;
-//            g2.drawImage(nuclear,x,y,size.width,size.height,this);
-//            g2.drawImage(nuclear,x,y,size.width,size.height,this);
-//        }
-        g2.setPaint(nuclearGreen);
-        g2.fillRect(0,0,getWidth(),getHeight());
 
+        g2buff.drawImage(nuclear,0,0,null);
+        drawCursor(g2buff);
 
-//        g2.drawImage(buffer,0,0,getWidth(),getHeight(),this);
-
-
-//        System.out.println("stripIndex="+stripIndex);
-        g2.drawImage(strip[stripIndex],200,200,this);
-        stripIndex++;
-        if(stripIndex >= strip.length) {
-            stripIndex = 0;
-        }
-
-        cocoFont.drawString("TEST "+stripIndex,0,0,g2);
-
-        drawCursor(g2);
+        g2.drawImage(doubleBuffer,0,0,getWidth(),getHeight(),null);
 
         frames++;
     }
 
     protected void drawCursor(Graphics2D g2) {
-        cocoFont.drawChar(colorBlock[colorIndex],0,0,g2);
+        cocoFont.drawChar(colorBlock[colorIndex],0,48*6,g2);
     }
 
     protected Dimension calculateSize(Image im) {

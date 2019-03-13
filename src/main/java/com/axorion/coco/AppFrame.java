@@ -49,7 +49,7 @@ public class AppFrame extends JFrame implements InvocationHandler {
     public static final String HIDE_REGISTERS = "Hide Registers";
     public static final String SHOW_REGISTERS = "Show Registers";
     protected boolean isMac;
-    protected CocoWaver cocoPanel;
+    protected CocoPanel cocoPanel;
     private boolean running;
     private long fpsDelay = 0;
 
@@ -90,8 +90,8 @@ public class AppFrame extends JFrame implements InvocationHandler {
         memoryDialog = new Memory(this);
         debugWindow = new DebugWindow(this);
 
-//        cocoPanel = new CocoPanel(this);
-        cocoPanel = new CocoWaver(this);
+        cocoPanel = new CocoPanel(this);
+//        cocoPanel = new CocoWaver(this);
         getContentPane().add(cocoPanel,BorderLayout.CENTER);
 
 
