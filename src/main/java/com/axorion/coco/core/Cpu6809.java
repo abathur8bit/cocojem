@@ -60,17 +60,13 @@ public class Cpu6809 extends Cpu {
         mnemonic = MnemonicEnum6809.lookupMnemonic(opcode);
 
         switch(mnemonic) {
-            case ABX_M: abx(); break;
-            case CLRA: clra(); break;
-            case CLRB: clrb(); break;
+            case ABX_I : abx(); break;
+            case CLRA_I: clra(); break;
+            case CLRB_I: clrb(); break;
 
             default: //todo lee throw exception as the instruction was not valid
                 break;
         }
-
-//        if(pc.getReg() > 0) { //this seems to be the case when I'm running in edtasm, is this right?
-//            cc.setEntire(true);
-//        }
     }
 
     public void abx() {

@@ -23,19 +23,23 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RegisterTest {
-    @Test public void testReg() {
+    @Test
+    public void testReg() {
         Register target = new Register(0xABCD);
         assertEquals(0xABCD,target.getReg());
     }
-    @Test public void testLsb() {
+    @Test
+    public void testLsb() {
         Register target = new Register(0xABCD);
         assertEquals(0xCD,target.getLSB());
     }
-    @Test public void testMsb() {
+    @Test
+    public void testMsb() {
         Register target = new Register(0xABCD);
         assertEquals(0xAB,target.getMSB());
     }
-    @Test public void testDec() {
+    @Test
+    public void testDec() {
         Register target = new Register(1);
         target.dec();
         assertEquals(0,target.getReg());
