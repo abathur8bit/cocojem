@@ -26,7 +26,7 @@ class RegisterTest {
     @Test
     public void testReg() {
         Register target = new Register(0xABCD);
-        assertEquals(0xABCD,target.getReg());
+        assertEquals(0xABCD,target.getValue());
     }
     @Test
     public void testLsb() {
@@ -42,30 +42,30 @@ class RegisterTest {
     public void testDec() {
         Register target = new Register(1);
         target.dec();
-        assertEquals(0,target.getReg());
+        assertEquals(0,target.getValue());
         target.dec();
-        assertEquals(0xFFFF,target.getReg());
+        assertEquals(0xFFFF,target.getValue());
     }
     @Test public void testInc() {
         Register target = new Register(0xFFFE);
         target.inc();
-        assertEquals(0xFFFF,target.getReg());
+        assertEquals(0xFFFF,target.getValue());
         assertEquals(0xFF,target.getLSB());
         assertEquals(0xFF,target.getMSB());
         target.inc();
-        assertEquals(0,target.getReg());
+        assertEquals(0,target.getValue());
         assertEquals(0,target.getLSB());
         assertEquals(0,target.getMSB());
     }
     @Test public void setValueNormal() {
         Register target = new Register(0xABCD);
-        target.setReg(0x1234);
-        assertEquals(0x1234,target.getReg());
+        target.setValue(0x1234);
+        assertEquals(0x1234,target.getValue());
     }
     @Test public void setValueInvalid() {
         Register target = new Register(0xABCD);
-        target.setReg(0xF1234);
-        assertEquals(0x1234,target.getReg());
+        target.setValue(0xF1234);
+        assertEquals(0x1234,target.getValue());
     }
     @Test public void bitValid() {
         Register target = new Register(5);
@@ -76,15 +76,22 @@ class RegisterTest {
     @Test public void setBit() {
         Register target = new Register(1);
         target.setBit(1);
-        assertEquals(3,target.getReg());
+        assertEquals(3,target.getValue());
         target.setBit(2);
-        assertEquals(7,target.getReg());
+        assertEquals(7,target.getValue());
     }
     @Test public void testSetRegMsbLsb() {
         Register target = new Register(0);
-        target.setReg(0xAC,0xDC);
+        target.setValue(0xAC,0xDC);
         assertEquals(0xAC,target.getMSB());
         assertEquals(0xDC,target.getLSB());
-        assertEquals(0xACDC,target.getReg());
+        assertEquals(0xACDC,target.getValue());
+    }
+    @Test public void testSetMsb() {
+        Register target = new Register(0);
+        target.setValue(0xAC,0xDC);
+        assertEquals(0xACDC,target.getValue());
+        target.setValue(target.getMSB(),0x45);
+        assertEquals(0xAC45,target.getValue());
     }
 }

@@ -23,14 +23,14 @@ import com.axorion.coco.core.mc6809.MnemonicEnum6809;
 public class Cpu6809 extends Cpu {
     public static final String DEVICE_NAME = "MC6809";
     protected MnemonicEnum6809 mnemonic;
-    Register pc;
-    Register x;
-    Register y;
-    Register u;
-    Register s;
-    Register dp;
-    Register d;
-    ConditionCodeRegister cc;
+    Register regPC;
+    Register regX;
+    Register regY;
+    Register regU;
+    Register regS;
+    Register regDP;
+    Register regD;
+    ConditionCodeRegister regCC;
 
     public Cpu6809(int[] regs) {
         this(regs[0],regs[1],regs[2],regs[3],regs[4],regs[5],regs[6],regs[7]);
@@ -38,24 +38,26 @@ public class Cpu6809 extends Cpu {
 
     public Cpu6809(int pc,int x,int y,int u,int s,int dp,int d,int cc) {
         super(DEVICE_NAME);
-        this.pc = new Register(pc);
-        this.x = new Register(x);
-        this.y = new Register(y);
-        this.u = new Register(u);
-        this.s = new Register(s);
-        this.dp = new Register(dp);
-        this.d = new Register(d);
-        this.cc = new ConditionCodeRegister(cc);
+        this.regPC = new Register(pc);
+        this.regX = new Register(x);
+        this.regY = new Register(y);
+        this.regU = new Register(u);
+        this.regS = new Register(s);
+        this.regDP = new Register(dp);
+        this.regD = new Register(d);
+        this.regCC = new ConditionCodeRegister(cc);
     }
 
     public Cpu6809() {
-        super(DEVICE_NAME);
+        this(0,0,0,0,0,0,0,0);
     }
 
     public void exec(long now) {
-        int opcode = memory[pc.getReg()];
+        int opcode = memory[regPC.getValue()];
+        regPC.inc();
         if(opcode == 0x10 || opcode == 0x11) {
-            opcode = opcode*0x100+memory[pc.getReg()];
+            opcode = opcode*0x100+memory[regPC.getValue()];
+            regPC.inc();
         }
         mnemonic = MnemonicEnum6809.lookupMnemonic(opcode);
 
@@ -63,6 +65,7 @@ public class Cpu6809 extends Cpu {
             case ABX_I : abx(); break;
             case CLRA_I: clra(); break;
             case CLRB_I: clrb(); break;
+            case LDA_M: lda(); break;
 
             default: //todo lee throw exception as the instruction was not valid
                 break;
@@ -71,96 +74,111 @@ public class Cpu6809 extends Cpu {
 
     public void abx() {
         cycleCounter += mnemonic.getCycles();
-        x.setReg((x.getReg()+d.getLSB()) & Register.mask);
-        pc.inc();
+        regX.setValue((regX.getValue()+regD.getLSB()) & Register.mask);
     }
 
     public void clra() {
         cycleCounter += mnemonic.getCycles();
-        d.setReg(0,d.getLSB());
-        cc.setNegative(false);
-        cc.setZero(true);
-        cc.setOverflow(false);
-        cc.setCarry(false);
-        pc.inc();
+        regD.setValue(0,regD.getLSB());
+        regCC.setNegative(false).setZero(true).setOverflow(false).setCarry(false);
     }
 
     public void clrb() {
         cycleCounter += mnemonic.getCycles();
-        d.setReg(d.getMSB(),0);
-        cc.setNegative(false);
-        cc.setZero(true);
-        cc.setOverflow(false);
-        cc.setCarry(false);
-        pc.inc();
+        regD.setValue(regD.getMSB(),0);
+        regCC.setNegative(false).setZero(true).setOverflow(false).setCarry(false);
     }
 
+    public void lda() {
+        int operand = getOperand8bit(mnemonic.getMode());
+        regD.setValue(operand,regD.getLSB());
+        regCC.setZero(operand==0).setNegative((operand&0x80)==0x80).setOverflow(false);
+        regPC.inc();
+    }
+
+    public int getEffectiveAddress(AddressMode mode) {
+        int effectiveAddr = 0;
+        switch(mode) {
+            case Immediate  : effectiveAddr = regPC.getValue(); break;
+            case Direct     : effectiveAddr = memory[regDP.getValue()]*0x100+memory[regPC.getValue()]; break;
+        }
+        return effectiveAddr;
+    }
+    protected int getOperand8bit(AddressMode mode) {
+        int operand = memory[getEffectiveAddress(mode)];
+        return operand;
+    }
+    protected int getOperand16bit(AddressMode mode) {
+        int effectiveAddr = getEffectiveAddress(mode);
+        int operand = memory[effectiveAddr]*0x100+memory[effectiveAddr+1];
+        return operand;
+    }
     public static String getDeviceName() {
         return DEVICE_NAME;
     }
 
-    public Register getPc() {
-        return pc;
+    public Register getRegPC() {
+        return regPC;
     }
 
-    public void setPc(Register pc) {
-        this.pc = pc;
+    public void setRegPC(Register pc) {
+        this.regPC = pc;
     }
 
-    public Register getX() {
-        return x;
+    public Register getRegX() {
+        return regX;
     }
 
-    public void setX(int x) {
-        this.x.setReg(x);
+    public void setRegX(Register x) {
+        this.regX = x;
     }
 
-    public Register getY() {
-        return y;
+    public Register getRegY() {
+        return regY;
     }
 
-    public void setY(Register y) {
-        this.y = y;
+    public void setRegY(Register y) {
+        this.regY = y;
     }
 
-    public Register getU() {
-        return u;
+    public Register getRegU() {
+        return regU;
     }
 
-    public void setU(Register u) {
-        this.u = u;
+    public void setRegU(Register u) {
+        this.regU = u;
     }
 
-    public Register getS() {
-        return s;
+    public Register getRegS() {
+        return regS;
     }
 
     public void setS(Register s) {
-        this.s = s;
+        this.regS = s;
     }
 
-    public Register getDp() {
-        return dp;
+    public Register getRegDP() {
+        return regDP;
     }
 
-    public void setDp(Register dp) {
-        this.dp = dp;
+    public void setRegDP(Register dp) {
+        this.regDP = dp;
     }
 
-    public Register getD() {
-        return d;
+    public Register getRegD() {
+        return regD;
     }
 
-    public void setD(Register d) {
-        this.d = d;
+    public void setRegD(Register d) {
+        this.regD = d;
     }
 
-    public ConditionCodeRegister getCc() {
-        return cc;
+    public ConditionCodeRegister getRegCC() {
+        return regCC;
     }
 
-    //Careful, you are setting a new cc register, not setting the value of the existing one.
-    public void setCc(ConditionCodeRegister cc) {
-        this.cc = cc;
+    //Careful, you are setting a new regCC register, not setting the value of the existing one.
+    public void setRegCC(ConditionCodeRegister regCC) {
+        this.regCC = regCC;
     }
 }

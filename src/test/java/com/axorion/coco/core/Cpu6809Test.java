@@ -25,9 +25,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Cpu6809Test {
     //(D) Direct (I) Inherent (R) Relative (M) Immediate (X) Indexed (E) extened
-    //pc x y u s dp d cc
+    //pcReg x y u s dp d cc
     @Test
-    public void abx_m() {
+    public void abx_i() {
         int[] mem = {MnemonicEnum6809.ABX_I.getOpcode()};
         int[] regs = {0,1,0,0,0,0,0x1001,0xFF};
         Cpu6809 cpu = new Cpu6809(regs);
@@ -37,7 +37,7 @@ class Cpu6809Test {
         verifyRegisters(cpu,regsResult);
     }
     @Test
-    public void clra() {
+    public void clra_i() {
         int[] mem = {MnemonicEnum6809.CLRA_I.getOpcode()};
         //                                                       EFHINZVC
         int[] regs = {0,0,0,0,0,0,0xAABB,      Integer.parseInt("11111011",2)};
@@ -49,7 +49,7 @@ class Cpu6809Test {
         verifyRegisters(cpu,regsResult);
     }
     @Test
-    public void clrb() {
+    public void clrb_i() {
         int[] mem = {MnemonicEnum6809.CLRB_I.getOpcode()};
         //                                                       EFHINZVC
         int[] regs = {0,0,0,0,0,0,0xAABB,      Integer.parseInt("11111011",2)};
@@ -58,6 +58,42 @@ class Cpu6809Test {
         cpu.exec(System.nanoTime());
         //                                                       EFHINZVC
         int[] regsResult = {1,0,0,0,0,0,0xAA00,Integer.parseInt("11110100",2)};
+        verifyRegisters(cpu,regsResult);
+    }
+    @Test
+    public void ldaImmediate_8bit_NotNegative_Nonzero() {
+        int[] mem = {MnemonicEnum6809.LDA_M.getOpcode(),0x01};
+        //                     pc     x      y      u      s      dp   d      cc                EFHINZVC
+        int[] regs          = {0x0000,0x0000,0x0000,0x0000,0x0000,0x00,0xAABB,Integer.parseInt("00001011",2)};
+        Cpu6809 cpu = new Cpu6809(regs);
+        cpu.setMemoryRange(0,mem);
+        cpu.exec(System.nanoTime());
+        //                     pc     x      y      u      s      dp   d      cc                EFHINZVC
+        int[] regsResult    = {0x0002,0x0000,0x0000,0x0000,0x0000,0x00,0x01BB,Integer.parseInt("00000001",2)};
+        verifyRegisters(cpu,regsResult);
+    }
+    @Test
+    public void ldaImmediate_8bit_NotNegative_Zero() {
+        int[] mem = {MnemonicEnum6809.LDA_M.getOpcode(),0x00};
+        //                     pc     x      y      u      s      dp   d      cc                EFHINZVC
+        int[] regs          = {0x0000,0x0000,0x0000,0x0000,0x0000,0x00,0xAABB,Integer.parseInt("00000111",2)};
+        Cpu6809 cpu = new Cpu6809(regs);
+        cpu.setMemoryRange(0,mem);
+        cpu.exec(System.nanoTime());
+        //                     pc     x      y      u      s      dp   d      cc                EFHINZVC
+        int[] regsResult    = {0x0002,0x0000,0x0000,0x0000,0x0000,0x00,0x00BB,Integer.parseInt("00000101",2)};
+        verifyRegisters(cpu,regsResult);
+    }
+    @Test
+    public void ldaImmediate_8bit_Negative_Nonzero() {
+        int[] mem = {MnemonicEnum6809.LDA_M.getOpcode(),0xFF};
+        //                     pc     x      y      u      s      dp   d      cc                EFHINZVC
+        int[] regs          = {0x0000,0x0000,0x0000,0x0000,0x0000,0x00,0xAABB,Integer.parseInt("00001011",2)};
+        Cpu6809 cpu = new Cpu6809(regs);
+        cpu.setMemoryRange(0,mem);
+        cpu.exec(System.nanoTime());
+        //                     pc     x      y      u      s      dp   d      cc                EFHINZVC
+        int[] regsResult    = {0x0002,0x0000,0x0000,0x0000,0x0000,0x00,0xFFBB,Integer.parseInt("00001001",2)};
         verifyRegisters(cpu,regsResult);
     }
     @Test
@@ -88,6 +124,39 @@ class Cpu6809Test {
         cpu = new Cpu6809(regs);
         verifyRegisters(cpu,regs);
     }
+    @Test
+    public void getEffectiveAddressImmediate() {
+        int[] mem = {4,5,6,7,5, 2 ,7,8,9};
+        Cpu6809 cpu = new Cpu6809();
+        cpu.setMemoryRange(0,mem);
+        cpu.getRegPC().setValue(5);
+        assertEquals(5,cpu.getEffectiveAddress(AddressMode.Immediate));
+    }
+    @Test
+    public void getEffectiveAddressDirect() {
+        int[] mem = {0x04,0x05,0x06,0x01,0x02,0x03};
+        Cpu6809 cpu = new Cpu6809();
+        cpu.setMemoryRange(0,mem);
+
+        cpu.getRegPC().setValue(0);
+        cpu.getRegDP().setValue(0);
+        assertEquals(0x0404,cpu.getEffectiveAddress(AddressMode.Direct));
+
+        cpu.getRegPC().setValue(5);
+        cpu.getRegDP().setValue(2);
+        assertEquals(0x0603,cpu.getEffectiveAddress(AddressMode.Direct));
+    }
+    @Test
+    public void getOperand() {
+        int[] mem = {0,1,5,6,7,8};
+        Cpu6809 cpu = new Cpu6809();
+        cpu.setMemory(mem);
+
+        cpu.getRegPC().setValue(1);
+        assertEquals(1,cpu.getOperand8bit(AddressMode.Immediate));
+        cpu.getRegPC().setValue(2);
+        assertEquals(0x08,cpu.getOperand8bit(AddressMode.Direct));
+    }
 
 
     protected void verifyMemory(Cpu cpu,int offset,int[] mem) {
@@ -97,13 +166,14 @@ class Cpu6809Test {
     }
     protected void verifyRegisters(Cpu6809 cpu,int[] regs) {
         int i=0;
-        assertEquals(regs[i++], cpu.getPc().getReg());
-        assertEquals(regs[i++], cpu.getX() .getReg());
-        assertEquals(regs[i++], cpu.getY() .getReg());
-        assertEquals(regs[i++], cpu.getU() .getReg());
-        assertEquals(regs[i++], cpu.getS() .getReg());
-        assertEquals(regs[i++], cpu.getDp().getReg());
-        assertEquals(regs[i++], cpu.getD() .getReg());
-        assertEquals(regs[i++], cpu.getCc().getAll());
+        assertEquals(regs[i++], cpu.getRegPC().getValue());
+        assertEquals(regs[i++], cpu.getRegX() .getValue());
+        assertEquals(regs[i++], cpu.getRegY() .getValue());
+        assertEquals(regs[i++], cpu.getRegU() .getValue());
+        assertEquals(regs[i++], cpu.getRegS() .getValue());
+        assertEquals(regs[i++], cpu.getRegDP().getValue());
+        assertEquals(regs[i++], cpu.getRegD() .getValue());
+        assertEquals(regs[i++], cpu.getRegCC().getAll());
     }
+
 }

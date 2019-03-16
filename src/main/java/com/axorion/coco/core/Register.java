@@ -24,10 +24,10 @@ public class Register {
     public Register(int value) {
         this.reg = value;
     }
-    public void setReg(int value) {
+    public void setValue(int value) {
         reg = value&mask;
     }
-    public void setReg(int msb,int lsb) {
+    public void setValue(int msb,int lsb) {
         reg = (msb&0xFF)*0x100 + (lsb&0xFF);
     }
     public int getLSB() {
@@ -36,7 +36,7 @@ public class Register {
     public int getMSB() {
         return (reg & 0xFF00) / 0x100;
     }
-    public int getReg() {
+    public int getValue() {
         return reg;
     }
     public int inc() {
